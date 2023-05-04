@@ -7,7 +7,7 @@
     <div class="musicContent">
       <van-swipe
         :loop="false"
-        :width="143"
+        :width="128"
         class="my-swpie"
         :show-indicators="false"
       >
@@ -32,30 +32,6 @@
 import { getMusicList } from "@/request/api/home.js";
 import { reactive, onMounted } from "vue";
 export default {
-  //Vue2
-  // data() {
-  //   return {
-  //     musicList: [],
-  //   };
-  // },
-  // methods: {
-  //   async getGnedan() {
-  //     let res = await getMusicList();
-  //     console.log(res);
-  //     this.musicList = res.data.result;
-  //   },
-  //   changeCount: function (num) {
-  //     if (num >= 100000000) {
-  //       return (num / 100000000).toFixed(1) + "亿";
-  //     } else if (num >= 10000) {
-  //       return (num / 10000).toFixed(1) + "万";
-  //     }
-  //   },
-  // },
-  // mounted() {
-  //   this.getGnedan();
-  // },
-  // Vue3
   setup() {
     const state = reactive({
       musicList: [],

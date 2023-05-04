@@ -11,16 +11,16 @@
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-jiahao"></use>
         </svg>
-        <span>收藏({{ subscribedCount}})</span>
+        <span>收藏({{subscribedCount}})</span>
       </div>
     </div>
     <div class="itemListContent">
         <div class="item" v-for="(item, i) in itemList" :key="i">
-          <div class="itemLeft" @click="playMusic(i)">
+          <div class="itemLeft"  @click="playMusic({itemList,i},$event)">
             <span class="leftSpan">{{ i + 1 }}</span>
             <div>
               <p>{{ item.name }}</p>
-              <span v-for="(item1, index) in item.ar" :key="index">{{
+              <span v-for="(item1, index) in item.ar"  :key="index">{{
                   item1.name
                 }}</span>
             </div>
@@ -34,6 +34,7 @@
             </svg>
           </div>
         </div>
+        <div class="footSpace"></div>
     </div>
   </div>
 </template>
@@ -43,33 +44,42 @@
  * 本页面为itemMusic.vue的歌曲列表组件,
  * itemList 最终返回10条歌曲列表数据
  */
+import {useStore} from 'vuex'
+import {reactive,watch } from 'vue'
 
-import { watch } from 'vue'
-import { defineProps, reactive } from 'vue'
+const store = useStore()
 
-const props = defineProps([
+const { itemList,subscribedCount } = defineProps([
   'itemList',
   'subscribedCount'
 ])
 const newData = reactive({
-  props
+  itemList,
+  subscribedCount
 })
 
+function playMusic({ itemList,i }) {
+   store.commit('updatePlayList', { value : { itemList } })
+  store.commit('updatePlayListIndex', { value : i })
+}
+
 watch(newData, (newVal, oldValue) => {
-  console.log(newVal.props.itemList);
-  console.log(newVal.props.subscribedCount);
+  // console.log('---watch---')
+  console.log(newVal),
   {
     deep: true
   }
 })
+
+
 </script>
 
 <style lang="less" scoped>
 .itemMusicList {
   width: 100%;
-  height: 5rem;
+  height: 10rem;
   background-color: #fff;
-  padding: .25rem .3rem  0;
+  padding: .25rem .2rem  0;
   margin-top: .2rem;
   border-top-left-radius: .4rem;
   border-top-right-radius: .4rem;
@@ -94,7 +104,7 @@ watch(newData, (newVal, oldValue) => {
       }
     }
     .listTopRight {
-      width: 2.5rem;
+      width: 2.6rem;
       display: flex;
       justify-content: space-around;
       color: #fff;
@@ -104,11 +114,10 @@ watch(newData, (newVal, oldValue) => {
       align-items: center;
       .icon {
         width: .3rem;
-        height: 0.3rem;
-        fill: #fff;
-        margin-right: .3rem;
+        height: .3rem;
+        //比划颜色和宽度
         stroke: #fff;
-        stroke-width: 50;
+        stroke-width: 90;
       }
     }
   }
@@ -117,9 +126,10 @@ watch(newData, (newVal, oldValue) => {
 //  列表部分
   .itemListContent {
     width: 100%;
+    height: 12rem;
     .item {
       width: 100%;
-      height: 1.4rem;
+      height: 1.2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -133,17 +143,18 @@ watch(newData, (newVal, oldValue) => {
           text-align: center;
         }
         div {
+          width: 4.32rem;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
           p {
-            width: 4.54rem;
-            height: .4rem;
+            font-weight: 700;
             overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap;
-            font-weight: 700;
           }
           span{
             font-weight: 400;
-            font-size: .24rem;
+            font-size: .20rem;
             color: #999;
           }
           margin-left: 0.3rem;
@@ -166,6 +177,9 @@ watch(newData, (newVal, oldValue) => {
           right: 0;
         }
       }
+    }
+    .footSpace {
+      height: 1.4rem;
     }
   }
 
